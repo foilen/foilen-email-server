@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+bin/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.springBeans
+
+# IDEA
+.idea/
+/out/
+
+# Misc
+.attach_pid*
+
+# Projects
+_*

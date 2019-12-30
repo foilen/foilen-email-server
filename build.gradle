@@ -1,0 +1,63 @@
+plugins {
+  id 'application'
+  id 'java'
+}
+
+group = 'com.foilen'
+version = System.getenv('VERSION') ? System.getenv('VERSION')  : "master-SNAPSHOT"
+sourceCompatibility = '1.8'
+
+repositories {
+  mavenLocal()
+  mavenCentral {
+    // Fix for: "inconsistent module metadata found. Descriptor: org.zalando:faux-pas:0-SNAPSHOT Errors: bad version: expected='0.7.1' found='0-SNAPSHOT'"
+    metadataSources {
+      artifact()
+    }
+  }
+  jcenter()
+  maven {
+    url 'https://dl.bintray.com/foilen/maven'
+  }
+}
+
+
+dependencies {
+
+  // James
+  compile "org.apache.james:james-server-data-jdbc:$apacheJamesVersion"
+  compile "org.apache.james:james-server-jpa-guice:$apacheJamesVersion"
+
+  // Encryption
+  compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
+  compile 'org.bouncycastle:bcpg-jdk15on:1.58'
+  compile 'org.bouncycastle:bcprov-jdk15on:1.58'
+
+  // Misc
+  compile "args4j:args4j:$argsVersion"
+  compile "com.foilen:jl-smalltools:$smalltoolsVersion"
+  compile "com.google.guava:guava:27.0.1-jre"
+  compile 'org.freemarker:freemarker:2.3.23'
+  compile 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
+  compile "org.springframework:spring-jdbc:5.0.5.RELEASE"
+
+  // Test
+  testCompile "com.h2database:h2:1.4.197"
+  testCompile 'junit:junit:4.12'
+  testCompile "org.assertj:assertj-core:3.10.0"
+  testCompile "org.apache.james:apache-mailet-base:$apacheJamesVersion"
+  testCompile "org.apache.james:apache-mailet-test:$apacheJamesVersion"
+  testCompile "org.apache.james:james-server-data-api:$apacheJamesVersion"
+  testCompile "org.apache.james:james-server-protocols-library:$apacheJamesVersion"
+  testCompile "org.apache.james:james-server-protocols-smtp:$apacheJamesVersion"
+  testCompile "org.apache.james:james-server-util:$apacheJamesVersion"
+  testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+  testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+  testCompile "org.junit.vintage:junit-vintage-engine:$junitVersion"
+  testCompile "org.mockito:mockito-core:2.21.0"
+  testCompile "org.springframework:spring-test:5.0.5.RELEASE"
+}
+
+application {
+  mainClassName = 'com.foilen.email.server.Application'
+}
