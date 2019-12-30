@@ -27,5 +27,5 @@ export VERSION=$1
 echo ----[ Operation completed successfully ]----
 
 echo
-echo You can see published items on https://hub.docker.com/r/foilen/foilen-crm/tags/
+echo You can see published items on https://hub.docker.com/r/foilen/foilen-email-server/tags/
 echo You can send the tag: git push --tags
