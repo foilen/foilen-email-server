@@ -108,15 +108,12 @@ public class JamesWorkDirManagement extends AbstractBasics {
         copyFile(jamesConfigDirectory, "domainlist.xml");
         copyFileWithTemplate(jamesConfigDirectory, "imapserver.xml.ftl", model);
         copyFileWithTemplate(jamesConfigDirectory, "james-database.properties.ftl", model);
-        copyFile(jamesConfigDirectory, "jmx.properties");
         genKeystoreFromPemOrSelfSignedDomains(emailConfig.getImapCertPemFile(), jamesConfigDirectory + "keystore-imaps", domainNames);
         genKeystoreFromPemOrSelfSignedDomains(emailConfig.getPop3CertPemFile(), jamesConfigDirectory + "keystore-pop3s", domainNames);
         genKeystoreFromPemOrSelfSignedDomains(emailConfig.getSmtpCertPemFile(), jamesConfigDirectory + "keystore-smtps", domainNames);
         copyFile(jamesConfigDirectory, "listeners.xml");
-        copyFile(jamesConfigDirectory, "lmtpserver.xml");
         copyFileWithTemplate(jamesConfigDirectory, "mailetcontainer.xml.ftl", model);
         copyFile(jamesConfigDirectory, "mailrepositorystore.xml");
-        copyFile(jamesConfigDirectory, "managesieveserver.xml");
         copyFileWithTemplate(jamesConfigDirectory, "pop3server.xml.ftl", model);
         copyFile(jamesConfigDirectory, "recipientrewritetable.xml");
         copyFileWithTemplate(jamesConfigDirectory, "smtpserver.xml.ftl", model);

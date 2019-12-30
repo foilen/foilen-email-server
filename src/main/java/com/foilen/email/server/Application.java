@@ -23,25 +23,11 @@ import org.apache.james.modules.mailbox.DefaultEventModule;
 import org.apache.james.modules.mailbox.JPAMailboxModule;
 import org.apache.james.modules.mailbox.LuceneSearchMailboxModule;
 import org.apache.james.modules.protocols.IMAPServerModule;
-import org.apache.james.modules.protocols.LMTPServerModule;
-import org.apache.james.modules.protocols.ManageSieveServerModule;
 import org.apache.james.modules.protocols.POP3ServerModule;
 import org.apache.james.modules.protocols.ProtocolHandlerModule;
 import org.apache.james.modules.protocols.SMTPServerModule;
-import org.apache.james.modules.server.DataRoutesModules;
 import org.apache.james.modules.server.DefaultProcessorsConfigurationProviderModule;
-import org.apache.james.modules.server.ElasticSearchMetricReporterModule;
-import org.apache.james.modules.server.JMXServerModule;
-import org.apache.james.modules.server.MailQueueRoutesModule;
-import org.apache.james.modules.server.MailRepositoriesRoutesModule;
-import org.apache.james.modules.server.MailboxRoutesModule;
-import org.apache.james.modules.server.NoJwtModule;
 import org.apache.james.modules.server.RawPostDequeueDecoratorModule;
-import org.apache.james.modules.server.ReIndexingModule;
-import org.apache.james.modules.server.SieveRoutesModule;
-import org.apache.james.modules.server.SwaggerRoutesModule;
-import org.apache.james.modules.server.WebAdminServerModule;
-import org.apache.james.modules.spamassassin.SpamAssassinListenerModule;
 import org.apache.james.server.core.configuration.Configuration;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -66,42 +52,27 @@ import com.foilen.smalltools.tools.LogbackTools;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 
-// TODO Cleanup - Remove any extra modules
 public class Application extends AbstractBasics {
-
-    public static final Module WEBADMIN = Modules.combine( //
-            new WebAdminServerModule(), //
-            new DataRoutesModules(), //
-            new MailboxRoutesModule(), //
-            new MailQueueRoutesModule(), //
-            new MailRepositoriesRoutesModule(), //
-            new SwaggerRoutesModule(), //
-            new SieveRoutesModule(), //
-            new ReIndexingModule());
 
     public static final Module PROTOCOLS = Modules.combine( //
             new IMAPServerModule(), //
-            new LMTPServerModule(), //
-            new ManageSieveServerModule(), //
             new POP3ServerModule(), //
             new ProtocolHandlerModule(), //
-            new SMTPServerModule(), //
-            WEBADMIN);
+            new SMTPServerModule() //
+    );
 
     public static final Module JPA_SERVER_MODULE = Modules.combine( //
             new ActiveMQQueueModule(), //
             new DefaultProcessorsConfigurationProviderModule(), //
-            new ElasticSearchMetricReporterModule(), //
             new JPADataModule(), //
             new JPAMailboxModule(), //
             new JDBCDataSourceModule(), //
             new MailboxModule(), //
             new LuceneSearchMailboxModule(), //
-            new NoJwtModule(), //
             new RawPostDequeueDecoratorModule(), //
             new SieveJPARepositoryModules(), //
-            new DefaultEventModule(), //
-            new SpamAssassinListenerModule());
+            new DefaultEventModule() //
+    );
 
     public static final Module JPA_MODULE_AGGREGATE = Modules.combine(JPA_SERVER_MODULE, PROTOCOLS);
 
@@ -237,7 +208,6 @@ public class Application extends AbstractBasics {
         GuiceJamesServer server = GuiceJamesServer //
                 .forConfiguration(configuration) //
                 .combineWith(JPA_MODULE_AGGREGATE, //
-                        new JMXServerModule(), //
                         new FoilenJamesManagerModule() //
                 );
 
