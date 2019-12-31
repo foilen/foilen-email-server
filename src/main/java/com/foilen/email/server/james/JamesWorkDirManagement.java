@@ -89,6 +89,7 @@ public class JamesWorkDirManagement extends AbstractBasics {
      */
     public void generateConfiguration(EmailConfig emailConfig, String managerConfigFile, String jamesConfigDirectory) {
 
+        DirectoryTools.deleteFolder(jamesConfigDirectory);
         AssertTools.assertTrue(DirectoryTools.createPath(jamesConfigDirectory), "Could not create the james config directory: " + jamesConfigDirectory);
 
         Map<String, Object> model = new HashMap<String, Object>();
