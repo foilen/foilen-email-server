@@ -31,6 +31,8 @@ public class EmailConfig {
     private String smtpCertPemFile;
     private List<EmailConfigDomainAndRelay> domainAndRelais = new ArrayList<>();
 
+    private long maxMessageSizeInKb = 75000; // 75 MB
+
     public EmailConfigDatabase getDatabase() {
         return database;
     }
@@ -41,6 +43,10 @@ public class EmailConfig {
 
     public String getImapCertPemFile() {
         return imapCertPemFile;
+    }
+
+    public long getMaxMessageSizeInKb() {
+        return maxMessageSizeInKb;
     }
 
     public String getPop3CertPemFile() {
@@ -71,44 +77,58 @@ public class EmailConfig {
         return enableDebugDumpMessagesDetails;
     }
 
-    public void setDatabase(EmailConfigDatabase database) {
+    public EmailConfig setDatabase(EmailConfigDatabase database) {
         this.database = database;
+        return this;
     }
 
-    public void setDisableBounceNotifyPostmaster(boolean disableBounceNotifyPostmaster) {
+    public EmailConfig setDisableBounceNotifyPostmaster(boolean disableBounceNotifyPostmaster) {
         this.disableBounceNotifyPostmaster = disableBounceNotifyPostmaster;
+        return this;
     }
 
-    public void setDisableBounceNotifySender(boolean disableBounceNotifySender) {
+    public EmailConfig setDisableBounceNotifySender(boolean disableBounceNotifySender) {
         this.disableBounceNotifySender = disableBounceNotifySender;
+        return this;
     }
 
-    public void setDisableRelayDeniedNotifyPostmaster(boolean disableRelayDeniedNotifyPostmaster) {
+    public EmailConfig setDisableRelayDeniedNotifyPostmaster(boolean disableRelayDeniedNotifyPostmaster) {
         this.disableRelayDeniedNotifyPostmaster = disableRelayDeniedNotifyPostmaster;
+        return this;
     }
 
-    public void setDomainAndRelais(List<EmailConfigDomainAndRelay> domainAndRelais) {
+    public EmailConfig setDomainAndRelais(List<EmailConfigDomainAndRelay> domainAndRelais) {
         this.domainAndRelais = domainAndRelais;
+        return this;
     }
 
-    public void setEnableDebugDumpMessagesDetails(boolean enableDebugDumpMessagesDetails) {
+    public EmailConfig setEnableDebugDumpMessagesDetails(boolean enableDebugDumpMessagesDetails) {
         this.enableDebugDumpMessagesDetails = enableDebugDumpMessagesDetails;
+        return this;
     }
 
-    public void setImapCertPemFile(String imapCertPemFile) {
+    public EmailConfig setImapCertPemFile(String imapCertPemFile) {
         this.imapCertPemFile = imapCertPemFile;
+        return this;
     }
 
-    public void setPop3CertPemFile(String pop3CertPemFile) {
+    public void setMaxMessageSizeInKb(long maxMessageSizeInKb) {
+        this.maxMessageSizeInKb = maxMessageSizeInKb;
+    }
+
+    public EmailConfig setPop3CertPemFile(String pop3CertPemFile) {
         this.pop3CertPemFile = pop3CertPemFile;
+        return this;
     }
 
-    public void setPostmasterEmail(String postmasterEmail) {
+    public EmailConfig setPostmasterEmail(String postmasterEmail) {
         this.postmasterEmail = postmasterEmail;
+        return this;
     }
 
-    public void setSmtpCertPemFile(String smtpCertPemFile) {
+    public EmailConfig setSmtpCertPemFile(String smtpCertPemFile) {
         this.smtpCertPemFile = smtpCertPemFile;
+        return this;
     }
 
 }

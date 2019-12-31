@@ -36,7 +36,7 @@
         <authRequired>false</authRequired>
         <authorizedAddresses>127.0.0.0/8</authorizedAddresses>
         <verifyIdentity>true</verifyIdentity>
-        <maxmessagesize>75000</maxmessagesize><!-- 75MB -->
+        <maxmessagesize>${emailConfig.maxMessageSizeInKb?c}</maxmessagesize>
         <addressBracketsEnforcement>true</addressBracketsEnforcement>
         <smtpGreeting>Foilen Email Server (Apache JAMES)</smtpGreeting>
         <handlerchain>
@@ -64,7 +64,7 @@
         <authorizedAddresses>127.0.0.0/8</authorizedAddresses>
         <!-- Trust authenticated users -->
         <verifyIdentity>true</verifyIdentity>
-        <maxmessagesize>75000</maxmessagesize><!-- 75MB -->
+        <maxmessagesize>${emailConfig.maxMessageSizeInKb?c}</maxmessagesize>
         <addressBracketsEnforcement>true</addressBracketsEnforcement>
         <smtpGreeting>Foilen Email Server (Apache JAMES)</smtpGreeting>
         <handlerchain>
@@ -92,7 +92,7 @@
         <authorizedAddresses>127.0.0.0/8</authorizedAddresses>
         <!-- Trust authenticated users -->
         <verifyIdentity>true</verifyIdentity>
-        <maxmessagesize>75000</maxmessagesize><!-- 75MB -->
+        <maxmessagesize>${emailConfig.maxMessageSizeInKb?c}</maxmessagesize>
         <addressBracketsEnforcement>true</addressBracketsEnforcement>
         <smtpGreeting>Foilen Email Server (Apache JAMES)</smtpGreeting>
         <handlerchain>

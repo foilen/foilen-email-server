@@ -40,23 +40,28 @@ public class EmailConfigDomainAndRelay {
         return username;
     }
 
-    public void setDomain(String domain) {
+    public EmailConfigDomainAndRelay setDomain(String domain) {
         this.domain = domain;
+        return this;
     }
 
-    public void setHostname(String hostname) {
+    public EmailConfigDomainAndRelay setHostname(String hostname) {
         this.hostname = hostname;
+        return this;
     }
 
-    public void setPassword(String password) {
+    public EmailConfigDomainAndRelay setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    public void setPort(int port) {
+    public EmailConfigDomainAndRelay setPort(int port) {
         this.port = port;
+        return this;
     }
 
-    public void setUsername(String username) {
+    public EmailConfigDomainAndRelay setUsername(String username) {
         this.username = username;
+        return this;
     }
 }
