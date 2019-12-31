@@ -53,4 +53,4 @@ docker run -ti \
   foilen-email-server:master-SNAPSHOT \
   --jamesConfigFile /workdir/james-config.json \
   --workDir /workdir \
-  --debug | tee _log.txt
+  --debug

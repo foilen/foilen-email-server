@@ -84,3 +84,7 @@ cat > manager-config.json << _EOF
 }
 _EOF
 ```
+
+## Logs
+
+Logs are placed in "workdir/logs/"

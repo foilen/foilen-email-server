@@ -138,6 +138,10 @@ public class Application extends AbstractBasics {
             return;
         }
 
+        String logDir = options.getWorkDir() + "/logs";
+        System.setProperty("logDir", logDir);
+        DirectoryTools.createPath(logDir);
+
         if (options.isDebug()) {
             System.out.println("Enabling LOGBACK debug");
             LogbackTools.changeConfig("/com/foilen/email/server/logback-debug.xml");

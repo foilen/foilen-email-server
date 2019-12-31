@@ -1,16 +1,35 @@
 <configuration>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-    </root>
 
-    <logger name="org.hibernate" level="INFO"/>
-    <logger name="org.reflections.Reflections" level="ERROR"/>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${logDir}/email-server.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+      <fileNamePattern>email-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+      <maxHistory>30</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+
+    </rollingPolicy>
+
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="FILE" />
+  </root>
+
+  <logger name="org.hibernate" level="INFO" />
+  <logger name="org.reflections.Reflections" level="ERROR" />
 
 </configuration>
