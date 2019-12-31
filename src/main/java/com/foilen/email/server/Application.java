@@ -77,12 +77,7 @@ public class Application extends AbstractBasics {
     public static final Module JPA_MODULE_AGGREGATE = Modules.combine(JPA_SERVER_MODULE, PROTOCOLS);
 
     public static void main(String[] args) {
-        try {
-            new Application().execute(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        new Application().execute(args);
     }
 
     private static void showUsage() {
@@ -125,97 +120,104 @@ public class Application extends AbstractBasics {
         }
     }
 
-    private void execute(String[] args) throws Exception {
+    private void execute(String[] args) {
 
-        // Get the parameters
-        options = new Options();
-        CmdLineParser cmdLineParser = new CmdLineParser(options);
         try {
-            cmdLineParser.parseArgument(args);
-        } catch (CmdLineException e) {
-            e.printStackTrace();
-            showUsage();
-            return;
-        }
 
-        String logDir = options.getWorkDir() + "/logs";
-        System.setProperty("logDir", logDir);
-        DirectoryTools.createPath(logDir);
+            // Get the parameters
+            options = new Options();
+            CmdLineParser cmdLineParser = new CmdLineParser(options);
+            try {
+                cmdLineParser.parseArgument(args);
+            } catch (CmdLineException e) {
+                e.printStackTrace();
+                showUsage();
+                return;
+            }
 
-        if (options.isDebug()) {
-            System.out.println("Enabling LOGBACK debug");
-            LogbackTools.changeConfig("/com/foilen/email/server/logback-debug.xml");
-        } else {
-            System.out.println("Enabling LOGBACK normal");
-            LogbackTools.changeConfig("/com/foilen/email/server/logback.xml");
-        }
+            String logDir = options.getWorkDir() + "/logs";
+            System.setProperty("logDir", logDir);
+            DirectoryTools.createPath(logDir);
 
-        logger.info("Current user: {}", JavaEnvironmentValues.getUserName());
+            if (options.isDebug()) {
+                System.out.println("Enabling LOGBACK debug");
+                LogbackTools.changeConfig("/com/foilen/email/server/logback-debug.xml");
+            } else {
+                System.out.println("Enabling LOGBACK normal");
+                LogbackTools.changeConfig("/com/foilen/email/server/logback.xml");
+            }
 
-        // Load the config file
-        if (options.getJamesConfigFile() != null && FileTools.exists(options.getJamesConfigFile())) {
-            logger.info("Loading config file {}", options.getJamesConfigFile());
-            emailConfig = JsonTools.readFromFile(options.getJamesConfigFile(), EmailConfig.class);
-        } else {
-            logger.info("The config file {} does not exist. Will create a local in-memory config for testing", options.getJamesConfigFile());
-            emailConfig = new EmailConfig();
-            emailConfig.setDatabase(new EmailConfigDatabase() //
-                    .setHostname("127.0.0.1") //
-                    .setDatabase("james") //
-                    .setUsername("root")//
-                    .setPassword("ABC")//
-            );
-            emailConfig.setPostmasterEmail("account@localhost.foilen-lab.com");
-        }
+            logger.info("Current user: {}", JavaEnvironmentValues.getUserName());
 
-        EmailConfigDatabase database = emailConfig.getDatabase();
-        AssertTools.assertNotNull(database, "Missing 'database' field");
-        AssertTools.assertNotNull(database.getHostname(), "Missing 'database.hostname' field");
-        AssertTools.assertNotNull(database.getDatabase(), "Missing 'database.database' field");
-        AssertTools.assertNotNull(database.getUsername(), "Missing 'database.username' field");
-        AssertTools.assertNotNull(database.getPassword(), "Missing 'database.password' field");
-
-        // Create the working directory if missing
-        String workingDirectory = options.getWorkDir();
-        logger.info("Current working directory: {}", workingDirectory);
-        DirectoryTools.createPath(workingDirectory);
-
-        // Create a default manager config file if none specified
-        if (options.getManagerConfigFile() == null) {
-            logger.info("No --managerConfigFile specified. Will create a test one");
-            options.setManagerConfigFile(workingDirectory + "/email-manager-config.json");
-            EmailManagerConfig emailManagerConfig = new EmailManagerConfig();
-            emailManagerConfig.getDomains().add("localhost.foilen-lab.com");
-            emailManagerConfig.getAccounts().add(new EmailManagerConfigAccount() //
-                    .setEmail("account@localhost.foilen-lab.com") //
-                    .setPassword("qwerty"));
-            logger.info("Account account@localhost.foilen-lab.com with password 'qwerty' will receive all the emails sent to any account");
-            emailManagerConfig.getRedirections().add(new EmailManagerConfigRedirection() //
-                    .setEmail("*@localhost.foilen-lab.com") //
-                    .setRedirectTos(Arrays.asList("account@localhost.foilen-lab.com")));
-
-            JsonTools.writeToFile(options.getManagerConfigFile(), emailManagerConfig);
-        }
-
-        // Export all config as properties
-        configToSystemProperties();
-
-        // Process all the James configuration
-        String jamesConfigDirectory = workingDirectory + "/conf/";
-        JamesWorkDirManagement jamesWorkDirManagement = new JamesWorkDirManagement();
-        jamesWorkDirManagement.generateConfiguration(emailConfig, options.getManagerConfigFile(), jamesConfigDirectory);
-
-        Configuration configuration = Configuration.builder() //
-                .configurationPath("file://" + jamesConfigDirectory) //
-                .workingDirectory(workingDirectory) //
-                .build();
-        GuiceJamesServer server = GuiceJamesServer //
-                .forConfiguration(configuration) //
-                .combineWith(JPA_MODULE_AGGREGATE, //
-                        new FoilenJamesManagerModule() //
+            // Load the config file
+            if (options.getJamesConfigFile() != null && FileTools.exists(options.getJamesConfigFile())) {
+                logger.info("Loading config file {}", options.getJamesConfigFile());
+                emailConfig = JsonTools.readFromFile(options.getJamesConfigFile(), EmailConfig.class);
+            } else {
+                logger.info("The config file {} does not exist. Will create a local in-memory config for testing", options.getJamesConfigFile());
+                emailConfig = new EmailConfig();
+                emailConfig.setDatabase(new EmailConfigDatabase() //
+                        .setHostname("127.0.0.1") //
+                        .setDatabase("james") //
+                        .setUsername("root")//
+                        .setPassword("ABC")//
                 );
+                emailConfig.setPostmasterEmail("account@localhost.foilen-lab.com");
+            }
 
-        server.start();
+            EmailConfigDatabase database = emailConfig.getDatabase();
+            AssertTools.assertNotNull(database, "Missing 'database' field");
+            AssertTools.assertNotNull(database.getHostname(), "Missing 'database.hostname' field");
+            AssertTools.assertNotNull(database.getDatabase(), "Missing 'database.database' field");
+            AssertTools.assertNotNull(database.getUsername(), "Missing 'database.username' field");
+            AssertTools.assertNotNull(database.getPassword(), "Missing 'database.password' field");
+
+            // Create the working directory if missing
+            String workingDirectory = options.getWorkDir();
+            logger.info("Current working directory: {}", workingDirectory);
+            DirectoryTools.createPath(workingDirectory);
+
+            // Create a default manager config file if none specified
+            if (options.getManagerConfigFile() == null) {
+                logger.info("No --managerConfigFile specified. Will create a test one");
+                options.setManagerConfigFile(workingDirectory + "/email-manager-config.json");
+                EmailManagerConfig emailManagerConfig = new EmailManagerConfig();
+                emailManagerConfig.getDomains().add("localhost.foilen-lab.com");
+                emailManagerConfig.getAccounts().add(new EmailManagerConfigAccount() //
+                        .setEmail("account@localhost.foilen-lab.com") //
+                        .setPassword("qwerty"));
+                logger.info("Account account@localhost.foilen-lab.com with password 'qwerty' will receive all the emails sent to any account");
+                emailManagerConfig.getRedirections().add(new EmailManagerConfigRedirection() //
+                        .setEmail("*@localhost.foilen-lab.com") //
+                        .setRedirectTos(Arrays.asList("account@localhost.foilen-lab.com")));
+
+                JsonTools.writeToFile(options.getManagerConfigFile(), emailManagerConfig);
+            }
+
+            // Export all config as properties
+            configToSystemProperties();
+
+            // Process all the James configuration
+            String jamesConfigDirectory = workingDirectory + "/conf/";
+            JamesWorkDirManagement jamesWorkDirManagement = new JamesWorkDirManagement();
+            jamesWorkDirManagement.generateConfiguration(emailConfig, options.getManagerConfigFile(), jamesConfigDirectory);
+
+            Configuration configuration = Configuration.builder() //
+                    .configurationPath("file://" + jamesConfigDirectory) //
+                    .workingDirectory(workingDirectory) //
+                    .build();
+            GuiceJamesServer server = GuiceJamesServer //
+                    .forConfiguration(configuration) //
+                    .combineWith(JPA_MODULE_AGGREGATE, //
+                            new FoilenJamesManagerModule() //
+                    );
+
+            server.start();
+
+        } catch (Exception e) {
+            logger.error("Problem starting the application", e);
+            System.exit(1);
+        }
 
     }
 
