@@ -103,9 +103,6 @@
             <mailet match="HasHeader=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
                 <text>Recipient is ExactAndCatchAllRedirections</text>
             </mailet>
-            <mailet match="HasMailAttribute=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
-                <text>Recipient is ExactAndCatchAllRedirections</text>
-            </mailet>
 
             <!-- Local delivery -->
             <mailet match="RecipientIsLocal" class="com.foilen.james.components.mailet.LogInfo">
@@ -127,13 +124,7 @@
             <mailet match="HasHeader=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
                 <text>Remote delivery when destination was changed by ExactAndCatchAllRedirections</text>
             </mailet>
-            <mailet match="HasMailAttribute=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
-                <text>Remote delivery when destination was changed by ExactAndCatchAllRedirections</text>
-            </mailet>
             <mailet match="HasHeader=isRedirection" class="ToProcessor">
-                <processor>auth-user-relay</processor>
-            </mailet>
-            <mailet match="HasMailAttribute=isRedirection" class="ToProcessor">
                 <processor>auth-user-relay</processor>
             </mailet>
 
@@ -173,20 +164,7 @@
             <mailet match="HasHeader=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
                 <text>Remote delivery via the server directly (no gateway since redirection)</text>
             </mailet>
-            <mailet match="HasMailAttribute=isRedirection" class="com.foilen.james.components.mailet.LogInfo">
-                <text>Remote delivery via the server directly (no gateway since redirection)</text>
-            </mailet>
             <mailet match="HasHeader=isRedirection" class="RemoteDelivery">
-                <outgoing>outgoing</outgoing>
-
-                <delayTime>5000, 100000, 500000</delayTime>
-                <maxRetries>25</maxRetries>
-                <maxDnsProblemRetries>0</maxDnsProblemRetries>
-                <deliveryThreads>10</deliveryThreads>
-                <sendpartial>true</sendpartial>
-                <bounceProcessor>bounces</bounceProcessor>
-            </mailet>
-            <mailet match="HasMailAttribute=isRedirection" class="RemoteDelivery">
                 <outgoing>outgoing</outgoing>
 
                 <delayTime>5000, 100000, 500000</delayTime>
