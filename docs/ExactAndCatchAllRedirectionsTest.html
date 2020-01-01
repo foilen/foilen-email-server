@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>ExactAndCatchAllRedirectionsTest</title>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    #mynetwork {
+      width: 100%;
+      height: 1000px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+  // create an array with nodes
+  var nodes = new vis.DataSet([
+    {id: 1, label:'r1@s1.example.com', color: '#AAF'},
+    {id: 2, label:'a1@s1.example.com', color: '#FFB'},
+    {id: 3, label:'a2@s1.example.com', color: '#FFB'},
+    {id: 4, label:'outside@out.example.com', color: '#DDD'},
+    
+    {id: 5, label:'r2@s1.example.com', color: '#AAF'},
+    {id: 6, label:'a3@s1.example.com', color: '#FFB'},
+    
+    {id: 7, label:'r3@s2.example.com', color: '#AAF'},
+    {id: 8, label:'a4@s1.example.com', color: '#FFB'},
+    
+    {id: 9, label:'*@s1.example.com', color: '#FAA'},
+    {id: 10, label:'catchall1@example.com', color: '#FFB'},
+    {id: 11, label:'catchall2@example.com', color: '#FFB'},
+    
+    {id: 12, label:'rm1@s3.example.com', color: '#AAF'},
+    {id: 13, label:'a5@s1.example.com', color: '#FFB'},
+    
+    {id: 14, label:'l1@s1.example.com', color: '#AAF'},
+    {id: 15, label:'l2@s1.example.com', color: '#AAF'},
+    {id: 16, label:'any@s1.example.com', color: '#EEE'},
+  ])
+
+  // create an array with edges
+  var edges = new vis.DataSet([
+    {from: 1, to: 2, arrows:'to'},
+    {from: 1, to: 3, arrows:'to'},
+    {from: 1, to: 4, arrows:'to'},
+    {from: 5, to: 6, arrows:'to'},
+    {from: 7, to: 8, arrows:'to'},
+    {from: 9, to: 10, arrows:'to'},
+    {from: 9, to: 11, arrows:'to'},
+    {from: 12, to: 1, arrows:'to'},
+    {from: 12, to: 13, arrows:'to'},
+    {from: 14, to: 2, arrows:'to'},
+    {from: 14, to: 15, arrows:'to'},
+    {from: 15, to: 1, arrows:'to'},
+    {from: 15, to: 3, arrows:'to'},
+    {from: 15, to: 14, arrows:'to'},
+    {from: 15, to: 16, arrows:'to'},
+    {from: 16, to: 9, arrows:'to'},
+  ]);
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+  var options = {
+    nodes: {borderWidth: 2},
+    interaction: {hover: true}
+  }
+  var network = new vis.Network(container, data, options);
+</script>
+
+
+</body>
+</html>

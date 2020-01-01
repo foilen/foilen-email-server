@@ -9,6 +9,7 @@
  */
 package com.foilen.james.components.mailet;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 
@@ -24,31 +25,32 @@ import org.apache.mailet.base.GenericMailet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.foilen.smalltools.tools.CharsetTools;
 import com.google.common.collect.Multimap;
 
-public class DumpAllSystemErr extends GenericMailet {
+public class DumpAllLoggerInfo extends GenericMailet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DumpAllSystemErr.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DumpAllLoggerInfo.class);
 
     @Override
     public String getMailetInfo() {
-        return "Dumps config and message to System.err";
+        return "Dumps config and message to Logger.info";
     }
 
     @Override
     public void init() throws MessagingException {
         super.init();
 
-        System.err.println("---[Mailet Config]---");
+        LOGGER.info("---[Mailet Config]---");
         MailetConfig mailetConfig = getMailetConfig();
-        System.err.println("Mailet Name: " + mailetConfig.getMailetName());
+        LOGGER.info("Mailet Name: " + mailetConfig.getMailetName());
 
-        System.err.println("---[Mailet Config - Init Parameters ]---");
+        LOGGER.info("---[Mailet Config - Init Parameters ]---");
         mailetConfig.getInitParameterNames().forEachRemaining(name -> {
-            System.err.println(name + " -> " + mailetConfig.getInitParameter(name));
+            LOGGER.info(name + " -> " + mailetConfig.getInitParameter(name));
         });
 
-        System.err.println("------------");
+        LOGGER.info("------------");
     }
 
     @Override
@@ -56,46 +58,48 @@ public class DumpAllSystemErr extends GenericMailet {
         try {
 
             // Attributes
-            System.err.println("---[Mail - Attributes]---");
+            LOGGER.info("---[Mail - Attributes]---");
             mail.attributes() //
                     .sorted((a, b) -> a.getName().asString().compareTo(b.getName().asString())) //
                     .forEach(attribute -> {
-                        System.err.println(attribute.getName().asString() + " -> " + attribute.getValue().getValue());
+                        LOGGER.info(attribute.getName().asString() + " -> " + attribute.getValue().getValue());
                     });
 
-            System.err.println("---[Mail - MaybeSender]---");
+            LOGGER.info("---[Mail - MaybeSender]---");
             MaybeSender maybeSender = mail.getMaybeSender();
             if (maybeSender == null) {
-                System.err.println("Sender is null");
+                LOGGER.info("Sender is null");
             } else {
-                System.err.println("Email: " + maybeSender.asString());
+                LOGGER.info("Email: " + maybeSender.asString());
             }
 
             // Recipients
-            System.err.println("---[Mail - Recipients]---");
+            LOGGER.info("---[Mail - Recipients]---");
             mail.getRecipients().forEach(it -> {
-                System.err.println(it.asString());
+                LOGGER.info(it.asString());
             });
 
             // Headers
-            System.err.println("---[Mail - Headers]---");
+            LOGGER.info("---[Mail - Headers]---");
             Enumeration<Header> headers = mail.getMessage().getAllHeaders();
             while (headers.hasMoreElements()) {
                 Header header = headers.nextElement();
-                System.err.println(header.getName() + " -> " + header.getValue());
+                LOGGER.info(header.getName() + " -> " + header.getValue());
             }
-            System.err.println("---[Mail - Headers Per Recipient]---");
+            LOGGER.info("---[Mail - Headers Per Recipient]---");
             Multimap<MailAddress, org.apache.mailet.PerRecipientHeaders.Header> headersByRecipient = mail.getPerRecipientSpecificHeaders().getHeadersByRecipient();
             headersByRecipient.entries().forEach(entry -> {
                 org.apache.mailet.PerRecipientHeaders.Header header = entry.getValue();
-                System.err.println(entry.getKey().asString() + " : " + header.getName() + " -> " + header.getValue());
+                LOGGER.info(entry.getKey().asString() + " : " + header.getName() + " -> " + header.getValue());
             });
 
             // Message
-            System.err.println("---[Mail - Message]---");
+            LOGGER.info("---[Mail - Message]---");
             MimeMessage message = mail.getMessage();
-            message.writeTo(System.err);
-            System.err.println("------------");
+            ByteArrayOutputStream messageStream = new ByteArrayOutputStream();
+            message.writeTo(messageStream);
+            LOGGER.info(messageStream.toString(CharsetTools.UTF_8.name()));
+            LOGGER.info("------------");
         } catch (IOException e) {
             LOGGER.error("error printing message", e);
         }

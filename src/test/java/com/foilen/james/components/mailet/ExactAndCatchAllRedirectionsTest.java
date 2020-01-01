@@ -150,6 +150,8 @@ public class ExactAndCatchAllRedirectionsTest {
         // Test simple redirection
         execute(Arrays.asList("r1@s1.example.com"), Arrays.asList("a1@s1.example.com", "a2@s1.example.com", "outside@out.example.com"), mailet, //
                 Arrays.asList("a1@s1.example.com", "a2@s1.example.com", "outside@out.example.com"));
+        // Test outside and r2
+        execute(Arrays.asList("r2@s1.example.com", "outside@out.example.com"), Arrays.asList("a3@s1.example.com", "outside@out.example.com"), mailet, Arrays.asList("a3@s1.example.com"));
         // Test local account
         execute(Arrays.asList("a1@s1.example.com"), Arrays.asList("a1@s1.example.com"), mailet, Arrays.asList());
         // Test catch-all
