@@ -60,4 +60,5 @@ dependencies {
 
 application {
   mainClassName = 'com.foilen.email.server.Application'
+  applicationDefaultJvmArgs = ['-Xmx2g']
 }
