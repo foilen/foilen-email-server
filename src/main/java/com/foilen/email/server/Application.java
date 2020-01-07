@@ -44,6 +44,7 @@ import com.foilen.james.manager.FoilenJamesManagerModule;
 import com.foilen.smalltools.JavaEnvironmentValues;
 import com.foilen.smalltools.reflection.ReflectionTools;
 import com.foilen.smalltools.tools.AbstractBasics;
+import com.foilen.smalltools.tools.ApplicationResourceUsageTools;
 import com.foilen.smalltools.tools.AssertTools;
 import com.foilen.smalltools.tools.DirectoryTools;
 import com.foilen.smalltools.tools.FileTools;
@@ -146,6 +147,12 @@ public class Application extends AbstractBasics {
                 System.out.println("Enabling LOGBACK normal");
                 LogbackTools.changeConfig("/com/foilen/email/server/logback.xml");
             }
+
+            // Monitor the usage
+            new ApplicationResourceUsageTools() //
+                    .setDelayBetweenOutputInMs(60000) // 1 minute
+                    .setShowThreadStackstrace(false) //
+                    .start();
 
             logger.info("Current user: {}", JavaEnvironmentValues.getUserName());
 
