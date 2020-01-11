@@ -60,5 +60,5 @@ dependencies {
 
 application {
   mainClassName = 'com.foilen.email.server.Application'
-  applicationDefaultJvmArgs = ['-Xmx4g']
+  applicationDefaultJvmArgs = ['-Xmx4g', '-XX:+HeapDumpOnOutOfMemoryError']
 }
