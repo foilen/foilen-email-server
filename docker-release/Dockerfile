@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:8-stretch
 
 RUN export TERM=dumb ; \
   apt-get update && apt-get install -y \
