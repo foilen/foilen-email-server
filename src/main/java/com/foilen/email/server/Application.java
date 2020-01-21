@@ -37,6 +37,7 @@ import com.foilen.email.server.config.EmailConfigDatabase;
 import com.foilen.email.server.config.EmailManagerConfig;
 import com.foilen.email.server.config.EmailManagerConfigAccount;
 import com.foilen.email.server.config.EmailManagerConfigRedirection;
+import com.foilen.email.server.config.utils.FoilenUtilsModule;
 import com.foilen.email.server.exception.EmailServerException;
 import com.foilen.email.server.james.JamesWorkDirManagement;
 import com.foilen.james.components.jdbc.JDBCDataSourceModule;
@@ -91,6 +92,7 @@ public class Application extends AbstractBasics {
     private Options options;
 
     private void configToSystemProperties() {
+        System.setProperty("emailConfig.postmasterEmail", emailConfig.getPostmasterEmail());
         configToSystemProperties(options, "options");
         configToSystemProperties(emailConfig.getDatabase(), "database");
     }
@@ -216,7 +218,8 @@ public class Application extends AbstractBasics {
             GuiceJamesServer server = GuiceJamesServer //
                     .forConfiguration(configuration) //
                     .combineWith(JPA_MODULE_AGGREGATE, //
-                            new FoilenJamesManagerModule() //
+                            new FoilenJamesManagerModule(), //
+                            new FoilenUtilsModule() //
                     );
 
             server.start();
