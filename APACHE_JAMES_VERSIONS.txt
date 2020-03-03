@@ -1,5 +1,6 @@
 This file lists the Apache James version per release.
 
 Apache James : Foilen Email Server
+3.4.0-f2 : 1.0.5 (this is a patched version that fixes the POP3 delete)
 3.4.0-f1 : 1.0.4 (this is a patched version that fixes a memory leak of OpenJPA)
 3.4.0    : 1.0
