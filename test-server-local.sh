@@ -18,6 +18,15 @@ echo '###[ Create build ]###'
 ./step-compile-no-tests.sh
 ./step-create-docker-image.sh
 
+# Start mariadb if not started
+if netstat -ntl > /dev/null 2> /dev/null | grep 127.0.0.1:3306
+then
+  echo MariaDB is already running
+else
+  echo MariaDB is not running. Starting it
+  ./test-mariadb-start.sh
+fi
+
 # Config
 DB_HOST=$(docker inspect foilen-email-server_db | tr -s ' ' ' ' | grep '"IPAddress"' | head -n 1 | cut -d '"' -f 4)
 cat > $FOLDER_DATA/james-config.json << _EOF
