@@ -22,6 +22,7 @@ import org.apache.james.modules.data.SieveJPARepositoryModules;
 import org.apache.james.modules.mailbox.DefaultEventModule;
 import org.apache.james.modules.mailbox.JPAMailboxModule;
 import org.apache.james.modules.mailbox.LuceneSearchMailboxModule;
+import org.apache.james.modules.mailbox.MemoryDeadLetterModule;
 import org.apache.james.modules.protocols.IMAPServerModule;
 import org.apache.james.modules.protocols.POP3ServerModule;
 import org.apache.james.modules.protocols.ProtocolHandlerModule;
@@ -76,7 +77,11 @@ public class Application extends AbstractBasics {
             new DefaultEventModule() //
     );
 
-    public static final Module JPA_MODULE_AGGREGATE = Modules.combine(JPA_SERVER_MODULE, PROTOCOLS);
+    public static final Module OTHERS = Modules.combine( //
+            new MemoryDeadLetterModule() //
+    );
+
+    public static final Module JPA_MODULE_AGGREGATE = Modules.combine(JPA_SERVER_MODULE, PROTOCOLS, OTHERS);
 
     public static void main(String[] args) {
         new Application().execute(args);

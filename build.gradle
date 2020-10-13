@@ -9,12 +9,7 @@ sourceCompatibility = '1.8'
 
 repositories {
   mavenLocal()
-  mavenCentral {
-    // Fix for: "inconsistent module metadata found. Descriptor: org.zalando:faux-pas:0-SNAPSHOT Errors: bad version: expected='0.7.1' found='0-SNAPSHOT'"
-    metadataSources {
-      artifact()
-    }
-  }
+  mavenCentral()
   jcenter()
   maven {
     url 'https://dl.bintray.com/foilen/maven'
