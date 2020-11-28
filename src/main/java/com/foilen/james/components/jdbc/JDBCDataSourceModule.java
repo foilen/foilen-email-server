@@ -17,6 +17,6 @@ public class JDBCDataSourceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(DataSource.class).toProvider(MariaDbPoolDataSourceProvider.class);
+        bind(DataSource.class).toProvider(MariaDbDataSourceProvider.class);
     }
 }

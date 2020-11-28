@@ -4,7 +4,7 @@ set -e
 
 # Set environment
 export LANG="C.UTF-8"
-export VERSION=master-SNAPSHOT
+export VERSION=$(git rev-parse --abbrev-ref HEAD)-SNAPSHOT
 
 RUN_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $RUN_PATH
@@ -59,7 +59,7 @@ docker run -ti \
   --publish 587:10587 \
   --user $USER_ID \
   --volume $FOLDER_DATA:/workdir \
-  foilen-email-server:master-SNAPSHOT \
+  foilen-email-server:$VERSION \
   --jamesConfigFile /workdir/james-config.json \
   --workDir /workdir \
   --debug
