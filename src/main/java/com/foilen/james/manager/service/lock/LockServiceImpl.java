@@ -61,7 +61,7 @@ public class LockServiceImpl extends AbstractBasics implements LockService {
 
     private Lock getLock(String lockName) {
         try {
-            return jdbcTemplate.queryForObject("SELECT * FROM FOILEN_LOCK WHERE name=?", new Object[] { lockName }, ROW_MAPPER);
+            return jdbcTemplate.queryForObject("SELECT * FROM FOILEN_LOCK WHERE name=?", ROW_MAPPER, lockName);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

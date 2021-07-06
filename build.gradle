@@ -5,58 +5,53 @@ plugins {
 
 group = 'com.foilen'
 version = System.getenv('VERSION') ? System.getenv('VERSION')  : "master-SNAPSHOT"
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
-  maven {
-    url 'https://dl.bintray.com/foilen/maven'
-  }
 }
-
 
 dependencies {
 
   // James
-  compile "org.apache.james:james-server-data-jdbc:$apacheJamesVersion"
-  compile "org.apache.james:james-server-jpa-guice:$apacheJamesVersion"
+  implementation "org.apache.james:james-server-data-jdbc:$apacheJamesVersion"
+  implementation "org.apache.james:james-server-jpa-guice:$apacheJamesVersion"
 
   // Encryption
-  compile 'org.bouncycastle:bcpkix-jdk15on:1.58'
-  compile 'org.bouncycastle:bcpg-jdk15on:1.58'
-  compile 'org.bouncycastle:bcprov-jdk15on:1.58'
+  implementation "org.bouncycastle:bcpkix-jdk15on:$bouncyCastleVersion"
+  implementation "org.bouncycastle:bcpg-jdk15on:$bouncyCastleVersion"
+  implementation "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
 
   // Misc
-  compile "args4j:args4j:$argsVersion"
-  compile "com.foilen:jl-smalltools:$smalltoolsVersion"
-  compile "com.google.guava:guava:27.0.1-jre"
-  compile 'org.freemarker:freemarker:2.3.23'
-  compile "org.springframework:spring-jdbc:5.0.5.RELEASE"
+  implementation "args4j:args4j:$argsVersion"
+  implementation "com.foilen:jl-smalltools:$smalltoolsVersion"
+  implementation "com.google.guava:guava:$guavaVersion"
+  implementation 'org.freemarker:freemarker:2.3.23'
+  implementation "org.springframework:spring-jdbc:$springVersion"
   
   // Database
-  compile 'org.apache.commons:commons-dbcp2:2.8.0'
-  compile 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
+  implementation 'org.apache.commons:commons-dbcp2:2.8.0'
+  implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
 
   // Test
-  testCompile "com.h2database:h2:1.4.197"
-  testCompile 'junit:junit:4.12'
-  testCompile "org.assertj:assertj-core:3.10.0"
-  testCompile "org.apache.james:apache-mailet-base:$apacheJamesVersion"
-  testCompile "org.apache.james:apache-mailet-test:$apacheJamesVersion"
-  testCompile "org.apache.james:james-server-data-api:$apacheJamesVersion"
-  testCompile "org.apache.james:james-server-protocols-library:$apacheJamesVersion"
-  testCompile "org.apache.james:james-server-protocols-smtp:$apacheJamesVersion"
-  testCompile "org.apache.james:james-server-util:$apacheJamesVersion"
-  testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
-  testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
-  testCompile "org.junit.vintage:junit-vintage-engine:$junitVersion"
-  testCompile "org.mockito:mockito-core:2.21.0"
-  testCompile "org.springframework:spring-test:5.0.5.RELEASE"
+  testImplementation "com.h2database:h2:1.4.197"
+  testImplementation 'junit:junit:4.12'
+  testImplementation "org.assertj:assertj-core:3.10.0"
+  testImplementation "org.apache.james:apache-mailet-base:$apacheJamesVersion"
+  testImplementation "org.apache.james:apache-mailet-test:$apacheJamesVersion"
+  testImplementation "org.apache.james:james-server-data-api:$apacheJamesVersion"
+  testImplementation "org.apache.james:james-server-protocols-library:$apacheJamesVersion"
+  testImplementation "org.apache.james:james-server-protocols-smtp:$apacheJamesVersion"
+  testImplementation "org.apache.james:james-server-util:$apacheJamesVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+  testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
+  testImplementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
+  testImplementation "org.mockito:mockito-core:2.21.0"
+  testImplementation "org.springframework:spring-test:$springVersion"
 }
 
 application {
-  mainClassName = 'com.foilen.email.server.Application'
+  mainClass = 'com.foilen.email.server.Application'
   applicationDefaultJvmArgs = ['-Xmx4g', '-XX:+HeapDumpOnOutOfMemoryError']
 }

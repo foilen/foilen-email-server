@@ -16,7 +16,6 @@ import javax.annotation.Nullable;
 
 import org.apache.james.GuiceJamesServer;
 import org.apache.james.modules.MailboxModule;
-import org.apache.james.modules.activemq.ActiveMQQueueModule;
 import org.apache.james.modules.data.JPADataModule;
 import org.apache.james.modules.data.SieveJPARepositoryModules;
 import org.apache.james.modules.mailbox.DefaultEventModule;
@@ -27,9 +26,11 @@ import org.apache.james.modules.protocols.IMAPServerModule;
 import org.apache.james.modules.protocols.POP3ServerModule;
 import org.apache.james.modules.protocols.ProtocolHandlerModule;
 import org.apache.james.modules.protocols.SMTPServerModule;
+import org.apache.james.modules.queue.activemq.ActiveMQQueueModule;
 import org.apache.james.modules.server.DefaultProcessorsConfigurationProviderModule;
 import org.apache.james.modules.server.RawPostDequeueDecoratorModule;
 import org.apache.james.server.core.configuration.Configuration;
+import org.apache.james.server.core.configuration.Configuration.ConfigurationPath;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -77,9 +78,7 @@ public class Application extends AbstractBasics {
             new DefaultEventModule() //
     );
 
-    public static final Module OTHERS = Modules.combine( //
-            new MemoryDeadLetterModule() //
-    );
+    public static final Module OTHERS = new MemoryDeadLetterModule();
 
     public static final Module JPA_MODULE_AGGREGATE = Modules.combine(JPA_SERVER_MODULE, PROTOCOLS, OTHERS);
 
@@ -217,7 +216,7 @@ public class Application extends AbstractBasics {
             jamesWorkDirManagement.generateConfiguration(emailConfig, options.getManagerConfigFile(), jamesConfigDirectory);
 
             Configuration configuration = Configuration.builder() //
-                    .configurationPath("file://" + jamesConfigDirectory) //
+                    .configurationPath(new ConfigurationPath("file://" + jamesConfigDirectory)) //
                     .workingDirectory(workingDirectory) //
                     .build();
             GuiceJamesServer server = GuiceJamesServer //

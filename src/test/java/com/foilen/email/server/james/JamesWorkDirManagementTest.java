@@ -10,6 +10,7 @@
 package com.foilen.email.server.james;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import org.junit.Test;
 
@@ -18,7 +19,6 @@ import com.foilen.email.server.config.EmailConfigDatabase;
 import com.foilen.email.server.config.EmailConfigDomainAndRelay;
 import com.foilen.email.server.config.EmailManagerConfig;
 import com.foilen.smalltools.tools.JsonTools;
-import com.google.common.io.Files;
 
 public class JamesWorkDirManagementTest {
 
@@ -49,7 +49,7 @@ public class JamesWorkDirManagementTest {
         emailManagerConfig.getDomains().add("example.com");
         JsonTools.writeToFile(managerConfigFile, emailManagerConfig);
 
-        String jamesConfigDirectory = Files.createTempDir().getAbsolutePath();
+        String jamesConfigDirectory = Files.createTempDirectory(null).toFile().getAbsolutePath();
 
         // Execute
         jamesWorkDirManagement.generateConfiguration(emailConfig, managerConfigFile, jamesConfigDirectory);
