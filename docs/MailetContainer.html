@@ -1,0 +1,54 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>Container</title>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+  <style type="text/css">
+    #mynetwork {
+      width: 100%;
+      height: 1000px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<body>
+  Content of mailetcontainer.xml:
+  <div class="mermaid">
+    graph TD
+    transport[[transport]] --> root[[root]]
+    
+    root --> mPostmasterAlias[PostmasterAlias]
+    mPostmasterAlias --> mRecipientToLowerCase[RecipientToLowerCase]
+    mRecipientToLowerCase -- RelayLimit=30 --> mNull
+    mRecipientToLowerCase -- SMTPAuthSuccessful --> mSetMimeHeader[SetMimeHeader]
+    mRecipientToLowerCase --> mExactAndCatchAllRedirections[ExactAndCatchAllRedirections]
+    mSetMimeHeader --> mExactAndCatchAllRedirections
+    mExactAndCatchAllRedirections -- RecipientIsLocal --> localProcessor[[localProcessor]]
+    mExactAndCatchAllRedirections -- HostIsLocal --> localAccountDoesNotExistProcessor[[localAccountDoesNotExistProcessor]]
+    mExactAndCatchAllRedirections -- HasHeader=X-UserIsAuth --> outgoingAuthProcessor[[outgoingAuthProcessor]]
+    mExactAndCatchAllRedirections --> outgoingAnonymousProcessor[[outgoingAnonymousProcessor]]
+    
+    localProcessor --> mAddDeliveredToHeader[AddDeliveredToHeader] 
+    mAddDeliveredToHeader --> mLocalDelivery[LocalDelivery]
+    
+    outgoingAuthProcessor -- SenderIsRegex --> mRemoteDeliveryGateway[RemoteDelivery via Gateway with auth]
+    outgoingAuthProcessor --> outgoingDirectRelayProcessor[[outgoingDirectRelayProcessor]]
+    
+    outgoingDirectRelayProcessor --> mRemoteDeliveryDirectMX[RemoteDelivery direct with MX]
+    
+    outgoingAnonymousProcessor -- HasHeader=isRedirection --> outgoingDirectRelayProcessor
+    outgoingAnonymousProcessor --> outgoingDeniedProcessor[[outgoingDeniedProcessor]]
+    
+    localAccountDoesNotExistProcessor --> mBounce[Bounce]
+    
+    outgoingDeniedProcessor --> mNull[Null]
+    
+  </div>
+  
+</body>
+</html>
