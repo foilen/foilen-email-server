@@ -88,3 +88,12 @@ _EOF
 ## Logs
 
 Logs are placed in "workdir/logs/"
+
+## Ports
+
+- 25:10025: SMTP; startTLS
+- 110:10110: POP3; startTLS
+- 143:10143: IMAP; startTLS
+- 465:10465: SMTP; socketTLS
+- 587:10587: SMTP; startTLS
+- 993:10993: IMAP; socketTLS
