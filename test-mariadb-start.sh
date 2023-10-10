@@ -18,7 +18,7 @@ DBNAME=james
 
 cat > $FOLDER_DATA/createDb.sh << _EOF
 #!/bin/bash
-mysql -uroot -pABC << _EOFF
+mariadb -uroot -pABC << _EOFF
   CREATE DATABASE $DBNAME;
 _EOFF
 _EOF
@@ -33,7 +33,7 @@ if ! docker ps | grep $INSTANCE ; then
 	  --env DBNAME=$DBNAME \
 	  --publish 3306:3306 \
 	  --volume $FOLDER_DATA:/data \
-	  -d mariadb:10.3.6
+	  -d mariadb:11.1.2
   
   echo '###[ Wait 20 seconds ]###'
   sleep 20s

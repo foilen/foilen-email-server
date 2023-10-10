@@ -26,19 +26,19 @@ dependencies {
 
   // Misc
   implementation "args4j:args4j:$argsVersion"
-  implementation "com.foilen:jl-smalltools:$smalltoolsVersion"
+  implementation "com.foilen:jl-smalltools-bouncycastle:$smalltoolsVersion"
   implementation "com.google.guava:guava:$guavaVersion"
-  implementation 'org.freemarker:freemarker:2.3.23'
+  implementation 'org.freemarker:freemarker:2.3.32'
   implementation "org.springframework:spring-jdbc:$springVersion"
   
   // Database
-  implementation 'org.apache.commons:commons-dbcp2:2.8.0'
-  implementation 'org.mariadb.jdbc:mariadb-java-client:2.4.0'
+  implementation 'org.apache.commons:commons-dbcp2:2.10.0'
+  implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
 
   // Test
-  testImplementation "com.h2database:h2:1.4.197"
-  testImplementation 'junit:junit:4.12'
-  testImplementation "org.assertj:assertj-core:3.10.0"
+  testImplementation "com.h2database:h2:2.2.224"
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation "org.assertj:assertj-core:3.24.2"
   testImplementation "org.apache.james:apache-mailet-base:$apacheJamesVersion"
   testImplementation "org.apache.james:apache-mailet-test:$apacheJamesVersion"
   testImplementation "org.apache.james:james-server-data-api:$apacheJamesVersion"
@@ -48,7 +48,7 @@ dependencies {
   testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
   testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
   testImplementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
-  testImplementation "org.mockito:mockito-core:2.21.0"
+  testImplementation "org.mockito:mockito-core:5.6.0"
   testImplementation "org.springframework:spring-test:$springVersion"
 }
 
