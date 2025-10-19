@@ -28,15 +28,16 @@ dependencies {
   implementation "args4j:args4j:$argsVersion"
   implementation "com.foilen:jl-smalltools-bouncycastle:$smalltoolsVersion"
   implementation "com.google.guava:guava:$guavaVersion"
-  implementation 'org.freemarker:freemarker:2.3.32'
+  implementation 'com.google.code.findbugs:jsr305:3.0.2'
+  implementation 'org.freemarker:freemarker:2.3.34'
   implementation "org.springframework:spring-jdbc:$springVersion"
-  
+
   // Database
-  implementation 'org.apache.commons:commons-dbcp2:2.10.0'
-  implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+  implementation 'org.apache.commons:commons-dbcp2:2.13.0'
+  implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.6'
 
   // Test
-  testImplementation "com.h2database:h2:2.2.224"
+  testImplementation "com.h2database:h2:2.4.240"
   testImplementation 'junit:junit:4.13.2'
   testImplementation "org.assertj:assertj-core:3.24.2"
   testImplementation "org.apache.james:apache-mailet-base:$apacheJamesVersion"
@@ -48,7 +49,7 @@ dependencies {
   testImplementation "org.junit.jupiter:junit-jupiter-api:$junitVersion"
   testImplementation "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
   testImplementation "org.junit.vintage:junit-vintage-engine:$junitVersion"
-  testImplementation "org.mockito:mockito-core:5.6.0"
+  testImplementation "org.mockito:mockito-core:5.20.0"
   testImplementation "org.springframework:spring-test:$springVersion"
 }
 
