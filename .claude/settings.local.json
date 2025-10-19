@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./create-local-release.sh:*)"
+      "Bash(.gradlew.bat build:*)",
+      "Bash(./gradlew build:*)",
+      "Bash(./gradlew clean build:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(npm run serve:*)",
+      "WebSearch",
+      "WriteFile(**/*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
