@@ -1,6 +1,6 @@
 package com.foilen.james.components;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 public class MessagingExceptionWrapper {
 

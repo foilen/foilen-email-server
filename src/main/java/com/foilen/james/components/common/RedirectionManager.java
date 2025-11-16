@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import javax.sql.DataSource;
 
 import org.apache.james.core.MailAddress;
@@ -21,7 +21,7 @@ public class RedirectionManager {
 
     public static List<MailAddress> getCatchAllRedirections(MailAddress recipient) throws MessagingException {
         try {
-            return redirectionsByRecipient.get(new MailAddress(RedirectionManager.CATCH_ALL_FROM_USER, recipient.getDomain()));
+            return redirectionsByRecipient.get(new MailAddress(RedirectionManager.CATCH_ALL_FROM_USER, recipient.getDomain().asString()));
         } catch (ExecutionException e) {
             throw new MessagingException("Cannot load the list", e);
         }

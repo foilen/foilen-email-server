@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.mail.MessagingException;
+import jakarta.inject.Inject;
+import jakarta.mail.MessagingException;
 import javax.sql.DataSource;
 
 import org.apache.james.core.MailAddress;

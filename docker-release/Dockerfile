@@ -1,4 +1,4 @@
-FROM openjdk:11-stretch
+FROM eclipse-temurin:21-jre
 
 COPY app/ /app
 

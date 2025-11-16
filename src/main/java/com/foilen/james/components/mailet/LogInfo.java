@@ -1,6 +1,6 @@
 package com.foilen.james.components.mailet;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import org.apache.mailet.Mail;
 import org.apache.mailet.base.GenericMailet;
