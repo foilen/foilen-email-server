@@ -173,16 +173,16 @@ The system uses two separate JSON configuration files:
 ## Dependencies
 
 Version properties defined in `gradle.properties`:
-- Apache James: 3.6.0
-- Spring Framework: 5.3.30 (for JdbcTemplate)
+- Apache James: 3.9.0
+- Spring Framework: 5.3.39 (for JdbcTemplate)
 - BouncyCastle: 1.70 (cryptography, PEM handling)
-- Guava: 32.1.2-jre
-- MariaDB JDBC: 3.2.0
-- Apache Commons DBCP2: 2.10.0 (connection pooling)
-- Foilen Smalltools: 2.5.1 (utilities, file watching, JSON)
-- H2 Database: 2.2.224 (test only)
-- JUnit: 5.10.0 / 4.13.2
-- Mockito: 5.6.0
+- Guava: 33.5.0-jre
+- MariaDB JDBC: 3.5.6
+- Apache Commons DBCP2: 2.13.0 (connection pooling)
+- Foilen Smalltools: 2.6.0 (utilities, file watching, JSON)
+- H2 Database: 2.4.240 (test only)
+- JUnit: 5.14.0 / 4.13.2
+- Mockito: 5.20.0
 
 ## Key Design Patterns
 
