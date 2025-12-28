@@ -3,14 +3,12 @@ package com.foilen.email.server.config.utils;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-import org.apache.james.core.MailAddress;
 import org.apache.james.core.Username;
 import org.apache.james.core.builder.MimeMessageBuilder;
 import org.apache.james.mailbox.MailboxManager;
 import org.apache.james.mailbox.MailboxSession;
 import org.apache.james.mailbox.MessageManager;
 import org.apache.james.mailbox.model.MailboxPath;
-import org.apache.james.user.api.UsersRepository;
 
 import jakarta.mail.internet.MimeMessage;
 
@@ -26,7 +24,7 @@ public class AutoKillProcessOutOfMemory extends AbstractBasics implements Runnab
     private int killAtPercent = 90; // 90%
 
     @Inject
-    public AutoKillProcessOutOfMemory(UsersRepository usersRepository, @Named("mailboxmanager") MailboxManager mailboxManager) {
+    public AutoKillProcessOutOfMemory(@Named("mailboxmanager") MailboxManager mailboxManager) {
         this.mailboxManager = mailboxManager;
         start();
     }

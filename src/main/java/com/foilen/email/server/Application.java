@@ -6,8 +6,10 @@ import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import org.apache.james.GuiceJamesServer;
+import org.apache.james.NaiveDelegationStoreModule;
 import org.apache.james.modules.MailboxModule;
 import org.apache.james.modules.data.JPADataModule;
+import org.apache.james.modules.data.JPAUsersRepositoryModule;
 import org.apache.james.modules.data.SieveJPARepositoryModules;
 import org.apache.james.modules.mailbox.DefaultEventModule;
 import org.apache.james.modules.mailbox.JPAMailboxModule;
@@ -19,6 +21,8 @@ import org.apache.james.modules.protocols.ProtocolHandlerModule;
 import org.apache.james.modules.protocols.SMTPServerModule;
 import org.apache.james.modules.queue.activemq.ActiveMQQueueModule;
 import org.apache.james.modules.server.DefaultProcessorsConfigurationProviderModule;
+import org.apache.james.modules.server.MailStoreRepositoryModule;
+import org.apache.james.modules.server.MailetContainerModule;
 import org.apache.james.modules.server.RawPostDequeueDecoratorModule;
 import org.apache.james.server.core.configuration.Configuration;
 import org.apache.james.server.core.configuration.Configuration.ConfigurationPath;
@@ -31,6 +35,7 @@ import com.foilen.email.server.config.EmailManagerConfig;
 import com.foilen.email.server.config.EmailManagerConfigAccount;
 import com.foilen.email.server.config.EmailManagerConfigRedirection;
 import com.foilen.email.server.config.utils.FoilenUtilsModule;
+import com.foilen.email.server.config.utils.TextExtractorModule;
 import com.foilen.email.server.exception.EmailServerException;
 import com.foilen.email.server.james.JamesWorkDirManagement;
 import com.foilen.james.components.jdbc.JDBCDataSourceModule;
@@ -60,10 +65,14 @@ public class Application extends AbstractBasics {
             new ActiveMQQueueModule(), //
             new DefaultProcessorsConfigurationProviderModule(), //
             new JPADataModule(), //
+            new JPAUsersRepositoryModule(), //
             new JPAMailboxModule(), //
             new JDBCDataSourceModule(), //
             new MailboxModule(), //
             new LuceneSearchMailboxModule(), //
+            new MailStoreRepositoryModule(), //
+            new MailetContainerModule(), //
+            new NaiveDelegationStoreModule(), //
             new RawPostDequeueDecoratorModule(), //
             new SieveJPARepositoryModules(), //
             new DefaultEventModule() //
@@ -214,7 +223,8 @@ public class Application extends AbstractBasics {
                     .forConfiguration(configuration) //
                     .combineWith(JPA_MODULE_AGGREGATE, //
                             new FoilenJamesManagerModule(), //
-                            new FoilenUtilsModule() //
+                            new FoilenUtilsModule(), //
+                            new TextExtractorModule() //
                     );
 
             server.start();
