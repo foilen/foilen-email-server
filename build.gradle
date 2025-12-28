@@ -6,10 +6,10 @@ plugins {
 
 group = 'com.foilen'
 version = System.getenv('VERSION') ? System.getenv('VERSION')  : "master-SNAPSHOT"
-sourceCompatibility = '21'
-targetCompatibility = '21'
 
 java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
   toolchain {
     languageVersion = JavaLanguageVersion.of(21)
   }
