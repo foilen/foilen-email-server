@@ -1,20 +1,16 @@
 package com.foilen.email.server.config.utils;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
-import org.apache.james.core.MailAddress;
+import org.apache.james.core.Username;
 import org.apache.james.core.builder.MimeMessageBuilder;
 import org.apache.james.mailbox.MailboxManager;
-import org.apache.james.mailbox.model.MailboxConstants;
-import org.apache.james.metrics.api.MetricFactory;
-import org.apache.james.server.core.MailImpl;
-import org.apache.james.transport.mailets.delivery.MailDispatcher;
-import org.apache.james.transport.mailets.delivery.MailboxAppender;
-import org.apache.james.transport.mailets.delivery.SimpleMailStore;
-import org.apache.james.user.api.UsersRepository;
-import org.apache.mailet.Mail;
-import org.apache.mailet.MailetContext;
+import org.apache.james.mailbox.MailboxSession;
+import org.apache.james.mailbox.MessageManager;
+import org.apache.james.mailbox.model.MailboxPath;
+
+import jakarta.mail.internet.MimeMessage;
 
 import com.foilen.smalltools.tools.AbstractBasics;
 import com.foilen.smalltools.tools.ExecutorsTools;
@@ -22,23 +18,14 @@ import com.foilen.smalltools.tools.ThreadTools;
 
 public class AutoKillProcessOutOfMemory extends AbstractBasics implements Runnable {
 
-    private MailDispatcher mailDispatcher;
+    private MailboxManager mailboxManager;
 
     private long delayBetweenOutputInMs = 30000; // Every 30 seconds
     private int killAtPercent = 90; // 90%
 
     @Inject
-    public AutoKillProcessOutOfMemory(UsersRepository usersRepository, @Named("mailboxmanager") MailboxManager mailboxManager, MetricFactory metricFactory, MailetContext mailetContext) {
-        mailDispatcher = MailDispatcher.builder() //
-                .mailStore(SimpleMailStore.builder() //
-                        .mailboxAppender(new MailboxAppender(mailboxManager)) //
-                        .usersRepository(usersRepository) //
-                        .folder(MailboxConstants.INBOX) //
-                        .metric(metricFactory.generate("autoKillMails")) //
-                        .build())
-                .consume(true) //
-                .mailetContext(mailetContext) //
-                .build();
+    public AutoKillProcessOutOfMemory(@Named("mailboxmanager") MailboxManager mailboxManager) {
+        this.mailboxManager = mailboxManager;
         start();
     }
 
@@ -80,21 +67,37 @@ public class AutoKillProcessOutOfMemory extends AbstractBasics implements Runnab
                 if (percentUsed >= killAtPercent) {
                     logger.error("Used memory has reached {}% . Currently at {}% . Killing the process", killAtPercent, percentUsed);
 
-                    // Send email
-                    String email = System.getProperty("emailConfig.postmasterEmail");
-                    Mail mail = MailImpl.builder() //
-                            .name(getClass().getSimpleName()) //
-                            .sender(new MailAddress(email)) //
-                            .addRecipients(new MailAddress(email)) //
-                            .mimeMessage(MimeMessageBuilder.mimeMessageBuilder() //
+                    // Try to send email notification to postmaster
+                    try {
+                        String email = System.getProperty("emailConfig.postmasterEmail");
+                        if (email != null && !email.isEmpty()) {
+                            Username username = Username.of(email);
+                            MailboxSession session = mailboxManager.createSystemSession(username);
+                            MailboxPath inboxPath = MailboxPath.inbox(username);
+                            
+                            // Create the message
+                            MimeMessage message = MimeMessageBuilder.mimeMessageBuilder() //
                                     .addFrom(email) //
                                     .addToRecipient(email) //
                                     .setSubject("Autokilled") //
                                     .setText("Autokilled the process because it reached " + killAtPercent + "% . Currently at " + percentUsed + "%") //
-                                    .build() //
-                            ) //
-                            .build();
-                    mailDispatcher.dispatch(mail);
+                                    .build();
+                            
+                            // Append to inbox - convert MimeMessage to byte array
+                            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                            message.writeTo(baos);
+                            
+                            MessageManager messageManager = mailboxManager.getMailbox(inboxPath, session);
+                            messageManager.appendMessage(MessageManager.AppendCommand.builder()
+                                    .recent()
+                                    .build(baos.toByteArray()), session);
+                            
+                            mailboxManager.endProcessingRequest(session);
+                        }
+                    } catch (Exception e) {
+                        logger.error("Failed to send autokill notification email", e);
+                    }
+                    
                     System.exit(1);
                 }
 

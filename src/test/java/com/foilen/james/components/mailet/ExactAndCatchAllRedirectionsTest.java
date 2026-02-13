@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.mail.internet.AddressException;
+import jakarta.mail.internet.AddressException;
 import javax.sql.DataSource;
 
 import org.apache.james.core.MailAddress;

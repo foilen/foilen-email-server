@@ -1,6 +1,6 @@
 package com.foilen.james.components.handler.fastfail;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.james.core.MailAddress;
 import org.apache.james.domainlist.api.DomainList;
